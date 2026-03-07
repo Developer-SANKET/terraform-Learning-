@@ -74,6 +74,7 @@ resource "azurerm_network_interface" "nic" {
 # Linux Virtual Machine
 resource "azurerm_linux_virtual_machine" "vm" {
   for_each = tomap({ LinuxVM1 = "Standard_B1s", LinuxVM2 = "Standard_B2s" }) # meta argument to create multiple instances with different sizes
+  depends_on = [azurerm_network_interface.nic]  # Ensure NICs are created before VMs
   //#count = 2 # meta argument to create multiple instances
   name                = each.key # using for_each to assign unique names to each instance
   resource_group_name = azurerm_resource_group.rg.name
